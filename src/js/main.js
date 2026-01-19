@@ -11,12 +11,11 @@ const searchProductBtn = document.getElementById("search-product-btn")
 const lookupBarcodeBtn = document.getElementById("lookup-barcode-btn")
 const barcodeInput = document.getElementById("barcode-input")
 const productDetailModal = document.getElementById("product-detail-modal")
-let timer = null;          // للـ debounce
+let timer = null;         
 let currentQuery = "chicken";
 let z = ""
 
 async function fetchData(q) {
-  // لو q فاضي رجعه chicken
   if (!q || !q.trim()) q = "chicken";
   currentQuery = q;
 
@@ -378,7 +377,6 @@ async function fetchData3(z) {
   return y;
 }
 
-// 1) لما تدوس على كارت أكلة
 if (recipesGrid) {
   recipesGrid.addEventListener("click", function (e) {
     var card = e.target.closest(".recipe-card");
@@ -389,9 +387,7 @@ if (recipesGrid) {
   });
 }
 
-// 2) دالة بتجيب التفاصيل وتعرضها
 async function showMealDetails(mealId) {
-  // اخفي الصفحة الرئيسية
   var searchSection = document.getElementById("search-filters-section");
   var categoriesSection = document.getElementById("meal-categories-section");
   var recipesSection = document.getElementById("all-recipes-section");
@@ -402,7 +398,6 @@ async function showMealDetails(mealId) {
   if (recipesSection) recipesSection.classList.add("hidden");
   if (detailsSection) detailsSection.classList.remove("hidden");
 
-  // هات بيانات الوجبة من API
   var res = await fetch("https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + mealId);
   var data = await res.json();
 
@@ -415,18 +410,15 @@ async function showMealDetails(mealId) {
   await hydrateNutritionUI(meal);
 
 
-  // ========== (A) الصورة ==========
   var detailsImg = document.querySelector("#meal-details img");
   if (detailsImg) {
     detailsImg.src = meal.strMealThumb;
     detailsImg.alt = meal.strMeal;
   }
 
-  // ========== (B) الاسم ==========
   var title = document.querySelector("#meal-details h1");
   if (title) title.textContent = meal.strMeal;
 
-  // ========== (C) نوع الأكلة + البلد ==========
   var badgesRow = document.querySelector("#meal-details .absolute .flex.items-center.gap-3");
   if (badgesRow) {
     badgesRow.innerHTML =
@@ -438,7 +430,6 @@ async function showMealDetails(mealId) {
       "</span>";
   }
 
-  // ========== (D) المكونات ==========
   var ingGrid = document.querySelector("#meal-details .bg-white.rounded-2xl.shadow-lg.p-6 .grid");
   if (ingGrid) {
     var html = "";
@@ -466,7 +457,6 @@ async function showMealDetails(mealId) {
     ingGrid.innerHTML = html;
   }
 
-  // ========== (E) طريقة العمل ==========
   var stepsWrap = document.querySelector("#meal-details .space-y-4");
   if (stepsWrap) {
     var instructions = meal.strInstructions || "";
@@ -495,7 +485,6 @@ async function showMealDetails(mealId) {
     stepsWrap.innerHTML = stepsHtml;
   }
 
-  // ========== (F) فيديو يوتيوب (لو موجود) ==========
   var iframe = document.querySelector("#meal-details iframe");
   if (iframe) {
     if (meal.strYoutube) {
@@ -833,7 +822,6 @@ if (productsGrid) {
 
     var raw = await fetchProductDetails(barcode);
 
-    // ✅ دي أهم سطر
     var item = normalizeBarcodeResponse(raw);
 
     productDetailModal.classList.remove("hidden");
@@ -844,7 +832,6 @@ if (productsGrid) {
 
 if (productDetailModal) {
   productDetailModal.addEventListener("click", function (e) {
-    // لو ضغط على زرار الإغلاق (X أو Close)
     var btn = e.target.closest(".close-product-modal");
     if (btn) {
       productDetailModal.classList.add("hidden");
@@ -852,7 +839,6 @@ if (productDetailModal) {
       return;
     }
 
-    // (اختياري) لو ضغط على الخلفية اللي برا الكارد يقفل
     if (e.target === productDetailModal) {
       productDetailModal.classList.add("hidden");
       productDetailModal.innerHTML = "";
@@ -864,7 +850,7 @@ if (productDetailModal) {
 
 
 function normalizeBarcodeResponse(data) {
-  var p = data.product || data.result || data;   // لو متغلف جوا product
+  var p = data.product || data.result || data;   
 
   var n = p.nutriments || p.nutrients || p.nutrition || {};
 
@@ -878,7 +864,6 @@ function normalizeBarcodeResponse(data) {
     nutritionGrade: p.nutritionGrade || p.nutrition_grades,
     nova: p.nova || p.nova_group,
 
-    // أرقام التغذية (لو مش موجودة هتبقى undefined برضه حسب الداتا)
     calories: p.calories || n["energy-kcal_100g"] || n.energy_kcal_100g,
     protein: p.protein || n.proteins_100g || n.protein_100g,
     carbs: p.carbs || n.carbohydrates_100g,
