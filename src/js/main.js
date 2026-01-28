@@ -407,7 +407,7 @@ async function showMealDetails(mealId) {
   }
   if (!meal) return;
 
-  await hydrateNutritionUI(meal);
+ // await hydrateNutritionUI(meal);
 
 
   var detailsImg = document.querySelector("#meal-details img");
