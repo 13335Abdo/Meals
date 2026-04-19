@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@heroui/styles"; 
+
+@layer utilities {
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    color: #10b981 !important;
+    /* green-500 من Tailwind */
+    font-weight: 600;
+    padding: 8px;
+  }
+
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    background-color: white;
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    color: #059669 !important;
+    /* green-600 للهوفر */
+  }
+
+  .swiper-pagination-bullet {
+    opacity: 100 !important;
+    border-radius: 0% !important;
+  }
+
+
+  .swiper-pagination {
+    text-align: center;
+    z-index: 10;
+    transition: opacity .3s;
+    position: static !important;
+    transform: translate3d(0, 0, 0);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+  .disabled\:pointer-events-none:disabled
+  {
+        pointer-events: all;
+  }
+  
+
+
+
+}

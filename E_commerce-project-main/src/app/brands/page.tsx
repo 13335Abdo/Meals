@@ -1,0 +1,37 @@
+import { CallGetAllPrands } from '@/CallAPIs/CallGetAllPrandsAPI'
+import React from 'react'
+import BrandsDesign from '../_components/BrandsDesign'
+import TitleOfAllThing from '../_components/TitleOfAllThing'
+
+export interface responseType
+{
+  _id:string
+  updatedAt:string
+  name:string 
+  image:string
+  createdAt:string
+}
+
+export default async function Page() {
+
+
+  const response:responseType[] = await CallGetAllPrands()
+
+  return (
+    <>
+
+    <div>
+      <TitleOfAllThing />
+    </div>
+    <div className='grid grid-cols-1 my-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 w-[90%] m-auto'>
+
+
+    {response.map((items)=><BrandsDesign key={items._id} response={items} isCallAllCat={false} />)}
+
+    </div>
+
+
+
+    </>
+  )
+}
